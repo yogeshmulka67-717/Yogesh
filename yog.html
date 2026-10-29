@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yogesh | C Programmer & Web Builder</title>
+<style>
+  :root {
+    --bg: #05080f;
+    --card: rgba(255,255,255,0.05);
+    --border: rgba(0,255,200,0.2);
+    --accent: #00ffc8;
+    --accent2: #3a86ff;
+    --text: #e6edf3;
+    --muted: #8b98a9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Animated circuit background */
+  #bg {
+    position: fixed; inset: 0;
+    z-index: -1;
+  }
+
+  /* Navbar */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 8%;
+    background: rgba(5,8,15,0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  nav .logo { font-weight: 700; font-size: 1.3rem; color: var(--accent); font-family: monospace; }
+  nav ul { display: flex; gap: 28px; list-style: none; }
+  nav a { color: var(--text); text-decoration: none; font-size: 0.95rem; transition: color .3s; }
+  nav a:hover { color: var(--accent); }
+
+  section { padding: 100px 8% 60px; }
+
+  /* Hero */
+  #home {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hello { color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+  h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.1; }
+  h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .typing { font-size: 1.5rem; color: var(--muted); margin: 16px 0 30px; min-height: 2rem; font-family: monospace; }
+  .typing::after { content: '|'; animation: blink 1s infinite; color: var(--accent); }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .btn {
+    display: inline-block; padding: 12px 28px; margin-right: 12px;
+    border-radius: 6px; text-decoration: none; font-weight: 600;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .btn-primary { background: var(--accent); color: #031; }
+  .btn-outline { border: 1px solid var(--accent); color: var(--accent); }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,255,200,.3); }
+
+  h2 { font-size: 2rem; margin-bottom: 30px; }
+  h2::before { content: '// '; color: var(--accent); font-family: monospace; }
+
+  /* Cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 26px;
+    backdrop-filter: blur(6px);
+    transition: transform .3s, border-color .3s;
+  }
+  .card:hover { transform: translateY(-6px); border-color: var(--accent); }
+  .card h3 { color: var(--accent); margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 0.95rem; }
+  .icon { font-size: 2rem; margin-bottom: 10px; }
+
+  /* Code box */
+  pre {
+    background: #0a0f1a; border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; overflow-x: auto;
+    font-size: 0.9rem; color: #9ef0d6; margin-top: 20px;
+  }
+
+  /* Skill bars */
+  .skill { margin-bottom: 18px; }
+  .skill-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
+  .bar { height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .bar div {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 4px; transition: width 1.5s ease;
+  }
+
+  /* Contact form */
+  form { max-width: 600px; display: grid; gap: 14px; }
+  input, textarea {
+    padding: 14px; background: var(--card); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; font-size: 1rem;
+    font-family: inherit;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  button { border: none; cursor: pointer; font-size: 1rem; }
+
+  footer { text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); }
+
+  @media (max-width: 700px) { nav ul { display: none; } }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="logo">&lt;Yogesh/&gt;</div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <p class="hello">Hello, my name is</p>
+  <h1><span>Yogesh</span></h1>
+  <div class="typing" id="typing"></div>
+  <div>
+    <a href="#services" class="btn btn-primary">What I Build</a>
+    <a href="#contact" class="btn btn-outline">Hire Me</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Me</h2>
+  <p style="max-width:700px; color:var(--muted);">
+    I'm Yogesh, a student who is learning the C programming language and is deeply
+    interested in semiconductor engineering: how tiny transistors turn into the
+    chips that power the world. I also build websites for people, designed around
+    what each person actually needs.
+  </p>
+  <pre>
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello, I am Yogesh!\n");
+    printf("Learning C. Exploring semiconductors.\n");
+    return 0;
+}</pre>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <h2>Skills</h2>
+  <div style="max-width:700px;">
+    <div class="skill">
+      <div class="skill-top"><span>C Programming</span><span>60%</span></div>
+      <div class="bar"><div data-w="60"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-top"><span>Web Development (HTML / CSS / JS)</span><span>75%</span></div>
+      <div class="bar"><div data-w="75"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-top"><span>Semiconductor Fundamentals</span><span>45%</span></div>
+      <div class="bar"><div data-w="45"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-top"><span>Problem Solving</span><span>70%</span></div>
+      <div class="bar"><div data-w="70"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <h2>What I Build</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="icon">🌐</div>
+      <h3>Personal Websites</h3>
+      <p>Portfolios and profile pages that show who you are, clean and fast.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏪</div>
+      <h3>Business Websites</h3>
+      <p>Simple, professional sites for shops, services and small businesses.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📱</div>
+      <h3>Responsive Design</h3>
+      <p>Every site works smoothly on mobile, tablet and desktop.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⚡</div>
+      <h3>Custom Features</h3>
+      <p>Forms, animations, dashboards and tools made for your exact use.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact</h2>
+  <form onsubmit="event.preventDefault(); alert('Thanks! Your message was received.'); this.reset();">
+    <input type="text" placeholder="Your name" required>
+    <input type="email" placeholder="Your email" required>
+    <textarea rows="5" placeholder="What website do you need?" required></textarea>
+    <button class="btn btn-primary" type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>© 2026 Yogesh. Built with HTML, CSS &amp; JavaScript.</footer>
+
+<script>
+  /* ---------- Typing effect ---------- */
+  const words = ["C Programming Learner", "Semiconductor Enthusiast", "Website Builder"];
+  let w = 0, c = 0, deleting = false;
+  const el = document.getElementById('typing');
+  function type() {
+    const word = words[w];
+    el.textContent = deleting ? word.slice(0, --c) : word.slice(0, ++c);
+    let delay = deleting ? 50 : 100;
+    if (!deleting && c === word.length) { delay = 1500; deleting = true; }
+    else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; delay = 400; }
+    setTimeout(type, delay);
+  }
+  type();
+
+  /* ---------- Skill bars animate on scroll ---------- */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.bar div').forEach(b => b.style.width = b.dataset.w + '%');
+      }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(document.getElementById('skills'));
+
+  /* ---------- Circuit / chip animated background ---------- */
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [];
+  const GRID = 60;
+
+  function resize() {
+    W = canvas.width = innerWidth;
+    H = canvas.height = innerHeight;
+    nodes = [];
+    for (let x = GRID; x < W; x += GRID)
+      for (let y = GRID; y < H; y += GRID)
+        if (Math.random() < 0.35) nodes.push({ x, y });
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  // Signals travel along horizontal/vertical traces like current in a circuit
+  const signals = Array.from({ length: 35 }, () => newSignal());
+  function newSignal() {
+    const horizontal = Math.random() < 0.5;
+    return {
+      x: Math.round(Math.random() * (innerWidth / GRID)) * GRID,
+      y: Math.round(Math.random() * (innerHeight / GRID)) * GRID,
+      dx: horizontal ? (Math.random() < 0.5 ? 1 : -1) * 2 : 0,
+      dy: horizontal ? 0 : (Math.random() < 0.5 ? 1 : -1) * 2,
+      life: 60 + Math.random() * 120
+    };
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(5,8,15,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    // faint grid traces
+    ctx.strokeStyle = 'rgba(0,255,200,0.05)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += GRID) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += GRID) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+    // solder-pad nodes
+    ctx.fillStyle = 'rgba(0,255,200,0.25)';
+    nodes.forEach(n => { ctx.beginPath(); ctx.arc(n.x, n.y, 3, 0, Math.PI * 2); ctx.fill(); });
+
+    // moving signals
+    signals.forEach((s, i) => {
+      ctx.fillStyle = '#00ffc8';
+      ctx.shadowColor = '#00ffc8';
+      ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+      s.x += s.dx; s.y += s.dy; s.life--;
+      // randomly turn at grid intersections
+      if (s.x % GRID === 0 && s.y % GRID === 0 && Math.random() < 0.15) {
+        if (s.dx) { s.dy = (Math.random() < 0.5 ? 1 : -1) * 2; s.dx = 0; }
+        else { s.dx = (Math.random() < 0.5 ? 1 : -1) * 2; s.dy = 0; }
+      }
+      if (s.life <= 0 || s.x < 0 || s.x > W || s.y < 0 || s.y > H) signals[i] = newSignal();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+</body>
+</html>
